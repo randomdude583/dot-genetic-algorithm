@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+        var socket = io();
+
+    
+
+        function initGame() {
+            myGameArea.init();
+            startGame();
+        }
+
+        function startGame() {
+            console.log("start");
+            socket.emit('start', 'value');
+
+        }
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            init: function () {
+                this.canvas.width = 500;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+
+
+        function updateGameArea(elements) {
+            myGameArea.clear();
+
+            elements.forEach((e) => {
+                ctx = myGameArea.context;
+                ctx.fillStyle = e.color;
+
+                if (e.type == "Rect") {
+                    ctx.fillRect(e.x, e.y, e.width, e.height);
+                }
+                else if (e.type == "Circle") {
+                    ctx.beginPath();
+                    ctx.arc(e.x, e.y, e.radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = e.color;
+                    ctx.fill();
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        socket.on('error', console.error.bind(console));
+        socket.on('message', console.log.bind(console));
+
+        socket.on('update', (data) => {
+            updateGameArea(data.elements);
+        });
+
+        socket.on('updateGen', (data) => {
+            document.getElementById("genNumber").innerHTML = `GEN: ${data.number}`;
+        })
+
+
+        function addMessage(message) {
+            var text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
+    </script>
+</head>
+
+<body onload="initGame()">
+    <div></div>
+    <button onclick="startGame()">RESTART!</button>
+    <h3 id=genNumber>GEN 1</h3>
+</body>
+
+</html>

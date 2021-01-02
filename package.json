@@ -1,0 +1,18 @@
+{
+  "name": "genetic-dots",
+  "version": "1.0.0",
+  "description": "Test application for learning Genetic Algorithms.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Collette",
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "express": "^4.17.1",
+    "node-sdl2": "^2.1.2",
+    "socket.io": "^3.0.4",
+    "three": "^0.124.0"
+  }
+}
